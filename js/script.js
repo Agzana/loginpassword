@@ -1,21 +1,28 @@
-var show = function () {
-	$("#password").attr('type', 'text');
-    $("#show").attr('class','glyphicon glyphicon-eye-close');
-};
+$(function() {
+  var timeout,
+      showButton = $('#show'),
+      passwordInput = $('#password'),
+      show = function () {
+        passwordInput.attr('type', 'text');
+        showButton.find('i').addClass('glyphicon-eye-close');
+      },
+      hide = function () {
+        passwordInput.attr('type', 'password');
+        showButton.find('i').removeClass('glyphicon-eye-close');
+        clearTimeout(timeout);
+      },
+      showPassword = function (e) {
+        if (passwordInput.attr('type') === 'password') {
+          show();
+          timeout = setTimeout(hide, 1000);
+        } else {
+          hide();
+        }
 
-var hide = function () {
-	$("#password").attr('type', 'password');
-    $("#show").attr('class', 'glyphicon glyphicon-eye-open');
-}
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return false;
+      };
 
-var showpassword = function () {
-    if ($("#password").attr('type')==="password") {
-    show(); 
-	setTimeout("hide()",5000);
-} else {
-    hide();
-}
-};
-      
-$("#show").click(showpassword);
-      
+  showButton.click(showPassword);
+});
